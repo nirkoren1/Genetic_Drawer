@@ -16,7 +16,7 @@ class VectorSprite:
         return self.end
 
     def get_round_end_point(self, max_x, max_y):
-        return np.clip(np.rint(self.end[0]), 0, max_x), np.clip(np.rint(self.end[1]), 0, max_y)
+        return np.rint(self.end[0]), np.rint(self.end[1])
 
     def draw_on_surface(self, surface):
         pygame.draw.line(surface, self.color, self.start, self.end, width=2)
@@ -25,5 +25,5 @@ class VectorSprite:
         self.teta += self.freq
 
     @staticmethod
-    def get_random_vector(min_r, max_r, min_freq, max_freq, middle_point):
-        return VectorSprite(np.random.uniform(min_r, max_r), np.random.uniform(min_freq, max_freq), middle_point)
+    def get_random_vector(max_r, min_freq, max_freq, middle_point):
+        return VectorSprite(np.random.uniform(0, max_r), np.random.uniform(min_freq, max_freq), middle_point)
