@@ -38,4 +38,4 @@ def simulate(vectors, window_size):
 
 if __name__ == '__main__':
     window_size = [1000, 1000]
-    simulate([VectorSprite.get_random_vector(0, 60, -0.3, 0.3, (window_size[0] // 2, window_size[1] // 2)) for _ in range(10)], window_size)
+    simulate([VectorSprite.get_random_vector(60, -0.3, 0.3, (window_size[0] // 2, window_size[1] // 2)) for _ in range(2)], window_size)
