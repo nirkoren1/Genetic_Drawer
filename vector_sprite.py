@@ -12,7 +12,8 @@ class VectorSprite:
         self.end = (0, 0)
 
     def calc_end_point(self):
-        self.end = (self.start[0] + self.r * np.cos(np.pi * self.teta / 180), self.start[1] - self.r * np.sin(np.pi * self.teta / 180))
+        self.end = (self.start[0] + self.r * np.cos(np.pi * self.teta / 180),
+                    self.start[1] - self.r * np.sin(np.pi * self.teta / 180))
         return self.end
 
     def get_round_end_point(self, max_x, max_y):
