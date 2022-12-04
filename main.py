@@ -2,17 +2,27 @@ import pygame
 from vector_sprite import VectorSprite
 
 
-def simulate(vectors, window_size):
+def simulate(vectors, window_size, target_drawing):
+    for vec in vectors:
+        vec.teta = 90
     sprites = vectors
     drawing = set()
 
     pygame.init()
 
     drawing_screen = pygame.Surface(window_size)
+
+    for point in target_drawing:
+        pygame.draw.circle(drawing_screen, (0, 200, 0), point, 1)
     screen = pygame.display.set_mode(window_size)
 
     running = True
+    counter = 0
     while running:
+        counter += 1
+        if counter == 3000:
+            break
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -28,8 +38,7 @@ def simulate(vectors, window_size):
 
         pygame.draw.circle(drawing_screen, (200, 0, 0), sprites[-1].end, 1)
         # print(sprites[-1].get_round_end_point(500, 500))
-        drawing.add(sprites[-1].get_round_end_point(window_size[0], window_size[1]))
-        print('\r', len(drawing), end='')
+        # print('\r', len(drawing), end='')
         pygame.display.flip()
 
     # Quit the program
