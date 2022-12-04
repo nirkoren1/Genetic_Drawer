@@ -37,5 +37,9 @@ def simulate(vectors, window_size):
 
 
 if __name__ == '__main__':
-    window_size = [1000, 1000]
-    simulate([VectorSprite.get_random_vector(60, -0.3, 0.3, (window_size[0] // 2, window_size[1] // 2)) for _ in range(20)], window_size)
+    window_size = [500, 500]
+    simulate([VectorSprite.get_random_vector(60,
+                                             -0.3,
+                                             0.3,
+                                             (window_size[0] // 2, window_size[1] // 2)) for _ in range(20)],
+             window_size)

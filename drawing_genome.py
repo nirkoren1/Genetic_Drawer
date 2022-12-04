@@ -12,8 +12,9 @@ class Genome:
 
     def mutate(self, max_r, min_freq, max_freq):
         rand_vec_idx = np.random.randint(0, len(self.vectors))
-        self.vectors[rand_vec_idx] = VectorSprite.get_random_vector(max_r, min_freq, max_freq, (self.window_x_size // 2,
-                                                                                                self.window_y_size // 2))
+        self.vectors[rand_vec_idx] = VectorSprite.get_random_vector(max_r, min_freq, max_freq,
+                                                                    (self.window_x_size // 2,
+                                                                     self.window_y_size // 2))
         return self
 
     def fitness_eval(self, target_drawing: set):
