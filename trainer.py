@@ -1,7 +1,8 @@
 import threading
 import numpy as np
-from drawing_genome import Genome, cross_over
+from drawing_genome import Genome, cross_over, mutate
 from main import simulate
+from copy import deepcopy
 
 population_size = 100
 target_drawing = []
@@ -18,7 +19,7 @@ min_freq = -1
 max_freq = 1
 window_x_size = 1000
 window_y_size = 1000
-num_of_vectors = 25
+num_of_vectors = 20
 
 
 def create_gen_zero():
@@ -40,15 +41,15 @@ def evaluate_generation():
     #     threads.append(t)
     # for i in range(len(threads)):
     #     threads[i].join()
-    for idx, genome in enumerate(current_generation):
-        current_generation[idx][1] = genome[0].fitness_eval(target_drawing)
+    for genome in current_generation:
+        genome[1] = genome[0].fitness_eval(target_drawing)
 
 
 def tournament_selection():
     tournament_group_idx = np.random.choice(len(prev_generation), tournament_group_size, replace=False)
     tournament_group = [prev_generation[idx] for idx in tournament_group_idx]
     sorted_group = sorted(tournament_group, key=lambda x: x[1])
-    return sorted_group[-1][0], sorted_group[-2][0]
+    return sorted_group[-1][0]
 
 
 def create_new_gen():
@@ -57,18 +58,19 @@ def create_new_gen():
     current_generation = []
     if elitism:
         sorted_gen = list(reversed(sorted(prev_generation, key=lambda x: x[1])))
+        print(sorted_gen)
         for i in range(elitism_group_size):
             elite_genome = sorted_gen[i]
-            current_generation.append(elite_genome.copy())
-            current_generation.append([(elite_genome.copy())[0].mutate(max_r, min_freq, max_freq), -np.inf])
-            print(elite_genome)
+            current_generation.append([deepcopy(elite_genome[0]), - np.inf])
+            mutated_elite = mutate(elite_genome[0], max_r, min_freq, max_freq)
+            current_generation.append([mutated_elite, -np.inf])
+        print(current_generation)
     while len(current_generation) < population_size:
         rand_float = np.random.random()
         if rand_float < crossover_rate:
-            genome1, genome2 = tournament_selection()
-            new_genome = cross_over(genome1, genome2)
+            new_genome = cross_over(tournament_selection(), tournament_selection())
             if np.random.random() < mutation_rate:
-                new_genome = new_genome.mutate(max_r, min_freq, max_freq)
+                new_genome = mutate(new_genome, max_r, min_freq, max_freq)
             current_generation.append([new_genome, - np.inf])
         else:
             current_generation.append([Genome.random_genome(max_r, min_freq, max_freq, num_of_vectors, window_x_size,

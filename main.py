@@ -4,7 +4,7 @@ from vector_sprite import VectorSprite
 
 def simulate(vectors, window_size, target_drawing):
     for vec in vectors:
-        vec.teta = 90
+        vec.teta = vec.teta_start
     sprites = vectors
     drawing = set()
 
@@ -20,7 +20,7 @@ def simulate(vectors, window_size, target_drawing):
     counter = 0
     while running:
         counter += 1
-        if counter == 3000:
+        if counter == -1:
             break
 
         for event in pygame.event.get():
@@ -51,4 +51,4 @@ if __name__ == '__main__':
                                              -0.3,
                                              0.3,
                                              (window_size[0] // 2, window_size[1] // 2)) for _ in range(20)],
-             window_size)
+             window_size, set())
