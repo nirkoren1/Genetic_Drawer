@@ -1,11 +1,9 @@
 import pygame
 from vector_sprite import VectorSprite
+from drawing_genome import Genome
 
 
-def simulate(vectors, window_size, target_drawing):
-    for vec in vectors:
-        vec.teta = vec.teta_start
-    sprites = vectors
+def simulate(genome: Genome, window_size, target_drawing):
     drawing = set()
 
     pygame.init()
@@ -18,9 +16,12 @@ def simulate(vectors, window_size, target_drawing):
 
     running = True
     counter = 0
+    teta = 0
+    num_of_iterations = 20000
+    precision = 1 / num_of_iterations
     while running:
         counter += 1
-        if counter == -1:
+        if counter == num_of_iterations:
             break
 
         for event in pygame.event.get():
@@ -29,16 +30,10 @@ def simulate(vectors, window_size, target_drawing):
 
         screen.fill((0, 0, 0))
         screen.blit(drawing_screen, (0, 0))
-        prev = sprites[0].start
-        for sp in sprites:
-            sp.start = prev
-            prev = sp.calc_end_point()
-            sp.draw_on_surface(screen)
-            sp.step()
+        genome.draw_on_surface(screen, teta)
+        pygame.draw.circle(drawing_screen, (200, 0, 0), genome.step(teta), 1)
+        teta += precision
 
-        pygame.draw.circle(drawing_screen, (200, 0, 0), sprites[-1].end, 1)
-        # print(sprites[-1].get_round_end_point(500, 500))
-        # print('\r', len(drawing), end='')
         pygame.display.flip()
 
     # Quit the program
@@ -47,8 +42,4 @@ def simulate(vectors, window_size, target_drawing):
 
 if __name__ == '__main__':
     window_size = [500, 500]
-    simulate([VectorSprite.get_random_vector(60,
-                                             -0.3,
-                                             0.3,
-                                             (window_size[0] // 2, window_size[1] // 2)) for _ in range(20)],
-             window_size, set())
+    simulate(Genome.random_genome(20, 20, window_size[0], window_size[1]), window_size, set())

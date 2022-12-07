@@ -3,13 +3,13 @@ import numpy as np
 
 
 class VectorSprite:
-    def __init__(self, c, freq):
+    def __init__(self, c: complex, freq):
         self.c = c
         self.freq = freq
         self.color = (100, 100, 100)
 
     def calc_end_point(self, teta):
-        return self.c * pow(np.e, self.freq * 2 * np.pi * teta)
+        return self.c * pow(np.e, self.freq * 2 * np.pi * complex(0, 1) * teta)
 
     def get_end_point_no_complex(self, teta):
         end_point = self.calc_end_point(teta)

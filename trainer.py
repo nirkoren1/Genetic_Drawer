@@ -2,21 +2,18 @@ import threading
 import numpy as np
 from drawing_genome import Genome, cross_over, mutate
 from main import simulate
-from copy import deepcopy
 
 population_size = 100
 target_drawing = []
 mutation_rate = 0.2
-crossover_rate = 0.5
+crossover_rate = 1
 elitism = True
 elitism_group_size = 8
 tournament_group_size = 8
 generation_num = 0
 current_generation = []
 prev_generation = []
-max_r = 60
-min_freq = -1
-max_freq = 1
+max_c = 40
 window_x_size = 1000
 window_y_size = 1000
 num_of_vectors = 20
@@ -25,8 +22,7 @@ num_of_vectors = 20
 def create_gen_zero():
     global current_generation
     for i in range(population_size):
-        current_generation.append([Genome.random_genome(max_r, min_freq, max_freq, num_of_vectors, window_x_size,
-                                                        window_y_size), - np.inf])
+        current_generation.append([Genome.random_genome(max_c, num_of_vectors, window_x_size, window_y_size), - np.inf])
 
 
 def eval_single_genome(idx, genome):
@@ -58,13 +54,11 @@ def create_new_gen():
     current_generation = []
     if elitism:
         sorted_gen = list(reversed(sorted(prev_generation, key=lambda x: x[1])))
-        print(sorted_gen)
         for i in range(elitism_group_size):
             elite_genome = sorted_gen[i]
-            current_generation.append([deepcopy(elite_genome[0]), - np.inf])
-            mutated_elite = mutate(elite_genome[0], max_r, min_freq, max_freq)
+            current_generation.append(elite_genome)
+            mutated_elite = mutate(elite_genome[0], max_c)
             current_generation.append([mutated_elite, -np.inf])
-        print(current_generation)
     while len(current_generation) < population_size:
         rand_float = np.random.random()
         if rand_float < crossover_rate:

@@ -27,7 +27,8 @@ class Genome:
         end_point = complex(self.window_x_size // 2, self.window_y_size // 2)
         for vec in self.vectors_sprites:
             end_point += vec.calc_end_point(teta)
-        self.drawing.append([self.window_x_size // 2 + end_point.real, self.window_y_size // 2 + end_point.imag])
+        self.drawing.append([end_point.real, end_point.imag])
+        return end_point.real, end_point.imag
 
     def draw_on_surface(self, surface, teta):
         start = complex(self.window_x_size // 2, self.window_y_size // 2)
@@ -39,7 +40,7 @@ class Genome:
     @staticmethod
     def random_genome(max_c, num_of_vectors, window_x_size, window_y_size):
         return Genome(window_x_size, window_y_size,
-                      [complex(np.random.random() * max_c, np.random.random() * max_c) for _ in range(num_of_vectors)])
+                      [complex(np.random.uniform(-1, 1) * max_c, np.random.uniform(-1, 1) * max_c) for _ in range(num_of_vectors)])
 
 
 def mutate(genome: Genome, max_c):
@@ -54,8 +55,3 @@ def cross_over(genome1: Genome, genome2: Genome):
     dna2 = genome2.dna.copy()
     new_dna = dna1[:rand_idx_slice] + dna2[rand_idx_slice:]
     return Genome(genome1.window_x_size, genome1.window_y_size, new_dna)
-
-
-if __name__ == '__main__':
-    l = [1, 2, 3,4 ]
-    print(l[:2])
