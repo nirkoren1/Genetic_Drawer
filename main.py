@@ -17,7 +17,7 @@ def simulate(genome: Genome, window_size, target_drawing):
     running = True
     counter = 0
     teta = 0
-    num_of_iterations = 20000
+    num_of_iterations = 5000
     precision = 1 / num_of_iterations
     while running:
         counter += 1
@@ -42,4 +42,4 @@ def simulate(genome: Genome, window_size, target_drawing):
 
 if __name__ == '__main__':
     window_size = [500, 500]
-    simulate(Genome.random_genome(20, 20, window_size[0], window_size[1]), window_size, set())
+    simulate(Genome.random_genome(60, 11, window_size[0], window_size[1]), window_size, set())

@@ -12,7 +12,7 @@ class Genome:
         self.vectors_sprites = [VectorSprite(dna[i], ((-1) ** (i + 1)) * ((i + 1) // 2)) for i in range(len(dna))]
         self.drawing = []
 
-    def fitness_eval(self, target_drawing, num_of_iterations=2000):
+    def fitness_eval(self, target_drawing, num_of_iterations=1000):
         self.drawing = []
         precision = 1 / num_of_iterations
         teta = 0
@@ -40,12 +40,14 @@ class Genome:
     @staticmethod
     def random_genome(max_c, num_of_vectors, window_x_size, window_y_size):
         return Genome(window_x_size, window_y_size,
-                      [complex(np.random.uniform(-1, 1) * max_c, np.random.uniform(-1, 1) * max_c) for _ in range(num_of_vectors)])
+                      [complex(np.random.uniform(-1, 1) * (max_c - 1.8 * i), np.random.uniform(-1, 1) * (max_c - 1.8 * i)) for i in range(num_of_vectors)])
 
 
 def mutate(genome: Genome, max_c):
     dna = genome.dna.copy()
-    dna[np.random.randint(0, len(dna))] = complex(np.random.random() * max_c, np.random.random() * max_c)
+    dna[np.random.randint(0, len(dna))] = complex(np.random.uniform(-1, 1) * max_c, np.random.uniform(-1, 1) * max_c)
+    dna[np.random.randint(0, len(dna))] = complex(np.random.uniform(-1, 1) * max_c, np.random.uniform(-1, 1) * max_c)
+    dna[np.random.randint(0, len(dna))] = complex(np.random.uniform(-1, 1) * max_c, np.random.uniform(-1, 1) * max_c)
     return Genome(genome.window_x_size, genome.window_y_size, dna)
 
 
